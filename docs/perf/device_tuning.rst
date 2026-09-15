@@ -1,7 +1,7 @@
 Hardware Resource Needed for RL
 ===============================
 
-Last updated: 06/25/2025.
+Last updated: 09/16/2026.
 
 Since RL requires more resources compared to regular training, 
 determining how much resources are needed to successfully run it before training 
@@ -141,6 +141,68 @@ a PR and include a screenshot from Wandb or other verifiable evidence.
       - vllm0.8.3
       - `qwen2-7b_grpo-lora_1_h100_fsdp_vllm.sh <https://github.com/verl-project/verl/blob/2239fd0ff7210c80ad63e20581924d1f66167429/examples/tuning/7b/qwen2-7b_grpo-lora_1_h100_fsdp_vllm.sh>`_
       - `SimonHuang <thelongestusernameofall@gmail.com>`_
+
+8B (A800-80GB)
+~~~~~~~~~~~~~~
+
+Qwen3-8B GRPO on GSM8K+MATH, ``examples/tuning/scaling/run_qwen3_8b_fsdp.sh``.
+The script selects the two reference points below with ``TUNING_PROFILE``, on
+either four cards or a full eight-card node; the measured per-step times, peak
+memory and the A800 topology measurements are in
+``examples/tuning/README.md``. Note that ``min`` here is the memory-lean
+*configuration* on the smallest hardware the workload runs on -- two A800
+cards do not fit an 8B full-parameter GRPO step even with every memory
+optimization enabled.
+
+.. list-table::
+    :widths: auto
+    :header-rows: 1
+
+    * - Tag
+      - Model
+      - Task
+      - Resource
+      - MaxBatch
+      - Train
+      - Infer
+      - Link
+      - Contributor
+    * - MIN
+      - Qwen3-8B
+      - GRPO
+      - 4*A800-80GB
+      - 32
+      - fsdp
+      - vllm0.24.0
+      - `run_qwen3_8b_fsdp.sh <https://github.com/verl-project/verl/blob/main/examples/tuning/scaling/run_qwen3_8b_fsdp.sh>`_
+      - `Runguo LI <runguo.ai@gmail.com>`_
+    * - RECOMMENDED
+      - Qwen3-8B
+      - GRPO
+      - 4*A800-80GB
+      - 64
+      - fsdp
+      - vllm0.24.0
+      - `run_qwen3_8b_fsdp.sh <https://github.com/verl-project/verl/blob/main/examples/tuning/scaling/run_qwen3_8b_fsdp.sh>`_
+      - `Runguo LI <runguo.ai@gmail.com>`_
+    * - MIN
+      - Qwen3-8B
+      - GRPO
+      - 8*A800-80GB
+      - 64
+      - fsdp
+      - vllm0.24.0
+      - `run_qwen3_8b_fsdp.sh <https://github.com/verl-project/verl/blob/main/examples/tuning/scaling/run_qwen3_8b_fsdp.sh>`_
+      - `Runguo LI <runguo.ai@gmail.com>`_
+    * - RECOMMENDED
+      - Qwen3-8B
+      - GRPO
+      - 8*A800-80GB
+      - 128
+      - fsdp
+      - vllm0.24.0
+      - `run_qwen3_8b_fsdp.sh <https://github.com/verl-project/verl/blob/main/examples/tuning/scaling/run_qwen3_8b_fsdp.sh>`_
+      - `Runguo LI <runguo.ai@gmail.com>`_
 
 14B
 ~~~
